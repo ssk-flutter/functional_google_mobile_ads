@@ -3,7 +3,10 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:functional_google_mobile_ads/functional_google_mobile_ads.dart';
+import 'package:functional_google_mobile_ads_example/test_ad_id.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+import 'functional_admob_banner.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +38,8 @@ class _MyAppState extends State<MyApp> {
     // We also handle the message potentially returning null.
     try {
       platformVersion =
-          await _functionalGoogleMobileAdsPlugin.getPlatformVersion() ?? 'Unknown platform version';
+          await _functionalGoogleMobileAdsPlugin.getPlatformVersion() ??
+              'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -57,8 +61,10 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Plugin example app'),
         ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+        body: Column(
+          children: [
+            FunctionalAdmobBanner(bannerAdUnitId: TestAdId.banner),
+          ],
         ),
       ),
     );
