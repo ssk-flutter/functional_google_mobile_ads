@@ -63,7 +63,11 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Column(
           children: [
-            FunctionalAdmobBanner(bannerAdUnitId: TestAdId.banner),
+            Spacer(),
+            FunctionalAdmobBanner(
+              bannerAdUnitId: TestAdId.banner,
+              adSize: AdSize.banner,
+            ),
           ],
         ),
       ),
