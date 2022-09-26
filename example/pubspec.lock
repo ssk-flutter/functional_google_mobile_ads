@@ -75,7 +75,7 @@ packages:
     source: path
     version: "0.0.1"
   google_mobile_ads:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: google_mobile_ads
       url: "https://pub.dartlang.org"
