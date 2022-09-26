@@ -4,14 +4,14 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 class FunctionalAdmobBanner extends StatefulWidget {
   const FunctionalAdmobBanner({
     Key? key,
-    required String bannerAdUnitId,
-    AdSize adSize = AdSize.banner,
-  })  : _bannerAdUnitId = bannerAdUnitId,
-        _adSize = adSize,
-        super(key: key);
+    required this.bannerAdUnitId,
+    this.adSize = AdSize.banner,
+    this.bannerListener,
+  }) : super(key: key);
 
-  final String _bannerAdUnitId;
-  final AdSize _adSize;
+  final String bannerAdUnitId;
+  final AdSize adSize;
+  final BannerAdListener? bannerListener;
 
   @override
   State<FunctionalAdmobBanner> createState() => _FunctionalAdmobBannerState();
@@ -36,27 +36,47 @@ class _FunctionalAdmobBannerState extends State<FunctionalAdmobBanner> {
 
   void _initializeAd() {
     _adRequest = const AdRequest();
-    _bannerListener = BannerAdListener(
-      onAdLoaded: (ad) {
-        setState(() {});
-      },
-      onAdFailedToLoad: (ad, error) {
-        ad.dispose();
-        debugPrint('failed to load banner: $error)');
-      },
-    );
+    _bannerListener = createBannerAdListener();
 
     _bannerAd = BannerAd(
       size: _calculateAdSize(context),
-      adUnitId: widget._bannerAdUnitId,
+      adUnitId: widget.bannerAdUnitId,
       listener: _bannerListener,
       request: _adRequest,
     )..load();
   }
 
+  BannerAdListener createBannerAdListener() {
+    return BannerAdListener(
+      onAdLoaded: (ad) {
+        widget.bannerListener?.onAdLoaded?.call(ad);
+        setState(() {});
+      },
+      onAdFailedToLoad: (ad, error) {
+        widget.bannerListener?.onAdFailedToLoad?.call(ad, error);
+        ad.dispose();
+        debugPrint('failed to load banner: $error)');
+      },
+      onAdClosed: (ad) => widget.bannerListener?.onAdClosed?.call(ad),
+      onAdClicked: (ad) => widget.bannerListener?.onAdClicked?.call(ad),
+      onAdImpression: (ad) => widget.bannerListener?.onAdImpression?.call(ad),
+      onAdOpened: (ad) => widget.bannerListener?.onAdOpened?.call(ad),
+      onAdWillDismissScreen: (ad) =>
+          widget.bannerListener?.onAdWillDismissScreen?.call(ad),
+      onPaidEvent: (Ad ad, double valueMicros, PrecisionType precision,
+              String currencyCode) =>
+          widget.bannerListener?.onPaidEvent?.call(
+        ad,
+        valueMicros,
+        precision,
+        currencyCode,
+      ),
+    );
+  }
+
   AdSize _calculateAdSize(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    var heightRatio = widget._adSize.height / widget._adSize.width;
+    var heightRatio = widget.adSize.height / widget.adSize.width;
     var height = heightRatio * width;
 
     final adSize = AdSize(width: width.toInt(), height: height.toInt());
