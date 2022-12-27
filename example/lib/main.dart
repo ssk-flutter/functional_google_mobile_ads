@@ -60,8 +60,16 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Spacer(),
+            ElevatedButton(
+                onPressed: () async {
+                  final rewarded =
+                      await FunctionalAdmobRewarded.createAsync(adUnitId: TestAdId.rewarded);
+
+                  rewarded.showAndDispose();
+                },
+                child: const Text('Functional Admob Rewarded')),
             FunctionalAdmobBanner(
               bannerAdUnitId: TestAdId.banner,
               adSize: AdSize.banner,
