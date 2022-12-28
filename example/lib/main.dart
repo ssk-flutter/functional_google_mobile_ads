@@ -65,11 +65,20 @@ class _MyAppState extends State<MyApp> {
             ElevatedButton(
                 onPressed: () async {
                   final rewarded =
-                      await FunctionalAdmobRewarded.createAsync(adUnitId: TestAdId.rewarded);
+                      await FunctionalAdmobRewarded.create(adUnitId: TestAdId.rewarded);
 
-                  rewarded.showAndDispose();
+                  final item = await rewarded.showAndDispose();
+                  print('item is $item');
                 },
-                child: const Text('Functional Admob Rewarded')),
+                child: const Text('Functional Admob Rewarded - create / show')),
+            ElevatedButton(
+                onPressed: () async {
+                  final item = await FunctionalAdmobRewarded.show(adUnitId: TestAdId.rewarded);
+
+                  print('item is ${item.amount}');
+                  print('item is ${item.type}');
+                },
+                child: const Text('Functional Admob Rewarded show')),
             FunctionalAdmobBanner(
               bannerAdUnitId: TestAdId.banner,
               adSize: AdSize.banner,

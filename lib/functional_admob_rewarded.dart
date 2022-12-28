@@ -1,52 +1,56 @@
 import 'functional_admob_flutter.dart';
 
 class FunctionalAdmobRewarded {
-  static Future<FunctionalAdmobRewarded> createAsync(
-      {required String adUnitId}) async {
-    final result = FunctionalAdmobRewarded(adUnitId: adUnitId);
+  static Future<RewardItem> show({required String adUnitId}) async {
+    final rewarded = FunctionalAdmobRewarded();
+    await rewarded.load(adUnitId: adUnitId);
+    return await rewarded.showAndDispose();
+  }
 
-    while (result.isReady == false) {
-      if (result.loadAdError != null) {
-        throw result.loadAdError!;
-      }
-      await Future.delayed(const Duration(milliseconds: 300));
-    }
+  static Future<FunctionalAdmobRewarded> create(
+      {required String adUnitId}) async {
+    final result = FunctionalAdmobRewarded();
+
+    await result.load(adUnitId: adUnitId);
 
     return result;
   }
 
-  FunctionalAdmobRewarded({
-    required this.adUnitId,
-    AdRequest? request,
-    RewardedAdLoadCallback? rewardedAdLoadCallback,
-  }) : request = request ?? const AdRequest() {
-    this.rewardedAdLoadCallback =
-        createRewardedAdLoadCallback(rewardedAdLoadCallback);
-    _initAsync();
-  }
+  FunctionalAdmobRewarded();
 
-  final String adUnitId;
-  final AdRequest request;
-  late final RewardedAdLoadCallback rewardedAdLoadCallback;
   RewardedAd? _rewardedAd;
-
-  bool get isReady => _rewardedAd != null;
 
   RewardedAd get rewardedAd => _rewardedAd!;
 
   LoadAdError? loadAdError;
 
-  Future _initAsync() async {
-    RewardedAd.load(
+  Future load({
+    required adUnitId,
+    AdRequest? request,
+    RewardedAdLoadCallback? rewardedAdLoadCallback,
+  }) async {
+    _rewardedAd = null;
+    loadAdError = null;
+
+    await RewardedAd.load(
       adUnitId: adUnitId,
-      request: request,
-      rewardedAdLoadCallback: rewardedAdLoadCallback,
+      request: request ?? const AdRequest(),
+      rewardedAdLoadCallback:
+          createRewardedAdLoadCallback(rewardedAdLoadCallback),
     );
+
+    while (_rewardedAd == null) {
+      if (loadAdError != null) {
+        throw loadAdError!;
+      }
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
   }
 
   void dispose() {
     _rewardedAd?.dispose();
     _rewardedAd = null;
+    loadAdError = null;
   }
 
   RewardedAdLoadCallback createRewardedAdLoadCallback(
@@ -63,18 +67,48 @@ class FunctionalAdmobRewarded {
     );
   }
 
-  void showAndDispose() {
+  Future<RewardItem> showAndDispose({
+    bool? immersiveMode,
+    FullScreenContentCallback<RewardedAd>? fullScreenContentCallback,
+    OnUserEarnedRewardCallback? onUserEarnedReward,
+  }) async {
     rewardedAd.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
-        print('ad onAdShowFullScreen...');
+        fullScreenContentCallback?.onAdShowedFullScreenContent?.call(ad);
+      },
+      onAdImpression: (ad) {
+        fullScreenContentCallback?.onAdImpression?.call(ad);
       },
       onAdFailedToShowFullScreenContent: (ad, error) {
-        print('failed full');
+        fullScreenContentCallback?.onAdFailedToShowFullScreenContent
+            ?.call(ad, error);
+      },
+      onAdWillDismissFullScreenContent: (ad) {
+        fullScreenContentCallback?.onAdWillDismissFullScreenContent?.call(ad);
+      },
+      onAdDismissedFullScreenContent: (ad) {
+        fullScreenContentCallback?.onAdDismissedFullScreenContent?.call(ad);
+      },
+      onAdClicked: (ad) {
+        fullScreenContentCallback?.onAdClicked?.call(ad);
       },
     );
 
-    rewardedAd.setImmersiveMode(true);
-    rewardedAd.show(onUserEarnedReward: (ad, reward) {});
+    if (immersiveMode != null) {
+      rewardedAd.setImmersiveMode(immersiveMode);
+    }
+
+    RewardItem? item;
+    await rewardedAd.show(onUserEarnedReward: (ad, reward) {
+      print('rewarded ok: $reward');
+      item = reward;
+    });
+
+    while (item == null) {
+      await Future.delayed(const Duration(milliseconds: 100));
+    }
     dispose();
+    print('rewarded dispose');
+    return item!;
   }
 }
