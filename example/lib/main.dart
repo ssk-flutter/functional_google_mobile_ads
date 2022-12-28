@@ -23,6 +23,8 @@ class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
   final _functionalGoogleMobileAdsPlugin = FunctionalGoogleMobileAds();
 
+  final _rewarded = FunctionalAdmobRewarded();
+
   @override
   void initState() {
     super.initState();
@@ -53,6 +55,12 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _rewarded.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
@@ -60,25 +68,53 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            ElevatedButton(
-                onPressed: () async {
-                  final rewarded =
-                      await FunctionalAdmobRewarded.create(adUnitId: TestAdId.rewarded);
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const Text('Rewarded (sequential)'),
+                if (!_rewarded.isReady)
+                  ElevatedButton(
+                      onPressed: () async {
+                        await _rewarded.load(adUnitId: TestAdId.rewarded);
+                        setState(() {});
+                      },
+                      child: const Text('load')),
+                if (_rewarded.isReady)
+                  ElevatedButton(
+                      onPressed: () async {
+                        final item = await _rewarded.showAndDispose();
+                        setState(() {});
 
-                  final item = await rewarded.showAndDispose();
-                  print('item is $item');
-                },
-                child: const Text('Functional Admob Rewarded - create / show')),
-            ElevatedButton(
-                onPressed: () async {
-                  final item = await FunctionalAdmobRewarded.show(adUnitId: TestAdId.rewarded);
+                        print('item is ${item.amount}');
+                        print('item is ${item.type}');
+                      },
+                      child: const Text('show')),
+                if (_rewarded.isReady)
+                  ElevatedButton(
+                      onPressed: () async {
+                        _rewarded.dispose();
+                        setState(() {});
+                      },
+                      child: const Text('dispose')),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                const Text('Rewarded (instant)'),
+                ElevatedButton(
+                    onPressed: () async {
+                      final item = await FunctionalAdmobRewarded.show(
+                          adUnitId: TestAdId.rewarded);
 
-                  print('item is ${item.amount}');
-                  print('item is ${item.type}');
-                },
-                child: const Text('Functional Admob Rewarded show')),
+                      print('item is ${item.amount}');
+                      print('item is ${item.type}');
+                    },
+                    child: const Text('load & show')),
+              ],
+            ),
+            const Spacer(),
             FunctionalAdmobBanner(
               bannerAdUnitId: TestAdId.banner,
               adSize: AdSize.banner,

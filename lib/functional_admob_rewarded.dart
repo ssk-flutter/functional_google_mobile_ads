@@ -24,6 +24,8 @@ class FunctionalAdmobRewarded {
 
   LoadAdError? loadAdError;
 
+  get isReady => _rewardedAd != null;
+
   Future load({
     required adUnitId,
     AdRequest? request,
