@@ -1,4 +1,4 @@
-import 'functional_admob_flutter.dart';
+import 'functional_google_mobile_ads.dart';
 
 class FunctionalAdmobRewarded {
   static Future<RewardItem> show({required String adUnitId}) async {
