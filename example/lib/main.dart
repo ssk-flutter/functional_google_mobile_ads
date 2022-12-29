@@ -17,7 +17,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final _rewarded = FunctionalAdmobRewarded();
+  final _rewarded = FunctionalRewardedAd();
 
   @override
   void initState() {
@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
                 child: const Text('InterstitialAd')),
             ElevatedButton(
                 onPressed: () async {
-                  final item = await FunctionalAdmobRewarded.get(
+                  final item = await FunctionalRewardedAd.get(
                       adUnitId: TestAdId.rewarded);
 
                   print('item is ${item.amount}');
@@ -58,7 +58,7 @@ class _MyAppState extends State<MyApp> {
                 child: const Text('RewardedAd')),
             ElevatedButton(
                 onPressed: () async {
-                  final item = await FunctionalAdmobRewarded.get(
+                  final item = await FunctionalRewardedAd.get(
                       adUnitId: TestAdId.rewarded);
 
                   print('item is ${item.amount}');
@@ -66,7 +66,7 @@ class _MyAppState extends State<MyApp> {
                 },
                 child: const Text('RewardedInterstitialAd')),
             const Spacer(),
-            FunctionalAdmobBanner(
+            FunctionalBannerAd(
               bannerAdUnitId: TestAdId.banner,
               adSize: AdSize.banner,
             ),

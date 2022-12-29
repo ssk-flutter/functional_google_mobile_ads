@@ -1,13 +1,13 @@
 import 'functional_google_mobile_ads.dart';
 
-class FunctionalAdmobRewarded {
+class FunctionalRewardedAd {
   static Future<RewardItem> get({required String adUnitId}) async {
-    final rewarded = FunctionalAdmobRewarded();
+    final rewarded = FunctionalRewardedAd();
     await rewarded.load(adUnitId: adUnitId);
     return await rewarded.show();
   }
 
-  FunctionalAdmobRewarded();
+  FunctionalRewardedAd();
 
   RewardedAd? _rewardedAd;
 
