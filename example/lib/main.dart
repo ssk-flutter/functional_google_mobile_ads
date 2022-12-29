@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
           children: [
             ElevatedButton(
                 onPressed: () async {
-                  await FunctionalInterstitialAd.get(
+                  await FunctionalInterstitialAd.loadAndShow(
                       adUnitId: TestAdId.interstitial);
 
                   print('interstitial ok');
@@ -50,7 +50,7 @@ class _MyAppState extends State<MyApp> {
                 child: const Text('InterstitialAd')),
             ElevatedButton(
                 onPressed: () async {
-                  final item = await FunctionalRewardedAd.get(
+                  final item = await FunctionalRewardedAd.loadAndShow(
                       adUnitId: TestAdId.rewarded);
 
                   print('item is ${item.amount}');
@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
                 child: const Text('RewardedAd')),
             ElevatedButton(
                 onPressed: () async {
-                  final item = await FunctionalRewardedInterstitialAd.get(
+                  final item = await FunctionalRewardedInterstitialAd.loadAndShow(
                       adUnitId: TestAdId.rewardedInterstitial);
 
                   print('item is ${item.amount}');

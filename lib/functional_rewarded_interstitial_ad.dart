@@ -1,7 +1,7 @@
 import 'functional_google_mobile_ads.dart';
 
 class FunctionalRewardedInterstitialAd {
-  static Future<RewardItem> get({required String adUnitId}) async {
+  static Future<RewardItem> loadAndShow({required String adUnitId}) async {
     final rewarded = FunctionalRewardedInterstitialAd();
     await rewarded.load(adUnitId: adUnitId);
     return await rewarded.show();
