@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
                 if (_rewarded.isReady)
                   ElevatedButton(
                       onPressed: () async {
-                        final item = await _rewarded.showAndDispose();
+                        final item = await _rewarded.show();
                         setState(() {});
 
                         print('item is ${item.amount}');
@@ -75,7 +75,7 @@ class _MyAppState extends State<MyApp> {
                 const Text('Rewarded (instant)'),
                 ElevatedButton(
                     onPressed: () async {
-                      final item = await FunctionalAdmobRewarded.show(
+                      final item = await FunctionalAdmobRewarded.get(
                           adUnitId: TestAdId.rewarded);
 
                       print('item is ${item.amount}');

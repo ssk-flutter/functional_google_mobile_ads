@@ -9,9 +9,11 @@ This project is a functional version of the [google mobile ads](https://pub.dev/
 ## First of all, you have to follow mobile ads sdk(quick-start).
 [from here](https://developers.google.com/admob/flutter/quick-start)
 
+### import
 ```
 import 'package:functional_google_mobile_ads/functional_google_mobile_ads.dart';
 ```
+
 ## One line functional Usage
 
 #### FunctionalAdmob.interstitial
@@ -22,11 +24,9 @@ import 'package:functional_google_mobile_ads/functional_google_mobile_ads.dart';
 
 #### FunctionalAdmob.reward
 ```
-import 'package:functional_admob_flutter/functional_admob.dart';
-```
-
-```
-  await FunctionalAdmob.reward(adUnitId: 'adUnitId');
+  final rewarded = FunctionalMobileAdsRewarded();
+  await rewarded.load(adUnitId: 'adUnitId');
+  final item = await rewarded.show();
 ```
 
 #### FunctionalAdmob.banner (for your convenience)

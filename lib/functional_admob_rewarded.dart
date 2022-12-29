@@ -1,19 +1,10 @@
 import 'functional_google_mobile_ads.dart';
 
 class FunctionalAdmobRewarded {
-  static Future<RewardItem> show({required String adUnitId}) async {
+  static Future<RewardItem> get({required String adUnitId}) async {
     final rewarded = FunctionalAdmobRewarded();
     await rewarded.load(adUnitId: adUnitId);
-    return await rewarded.showAndDispose();
-  }
-
-  static Future<FunctionalAdmobRewarded> create(
-      {required String adUnitId}) async {
-    final result = FunctionalAdmobRewarded();
-
-    await result.load(adUnitId: adUnitId);
-
-    return result;
+    return await rewarded.show();
   }
 
   FunctionalAdmobRewarded();
@@ -26,7 +17,7 @@ class FunctionalAdmobRewarded {
 
   get isReady => _rewardedAd != null;
 
-  Future load({
+  Future<void> load({
     required adUnitId,
     AdRequest? request,
     RewardedAdLoadCallback? rewardedAdLoadCallback,
@@ -69,7 +60,7 @@ class FunctionalAdmobRewarded {
     );
   }
 
-  Future<RewardItem> showAndDispose({
+  Future<RewardItem> show({
     bool? immersiveMode,
     FullScreenContentCallback<RewardedAd>? fullScreenContentCallback,
     OnUserEarnedRewardCallback? onUserEarnedReward,
@@ -102,7 +93,6 @@ class FunctionalAdmobRewarded {
 
     RewardItem? item;
     await rewardedAd.show(onUserEarnedReward: (ad, reward) {
-      print('rewarded ok: $reward');
       item = reward;
     });
 
@@ -110,7 +100,6 @@ class FunctionalAdmobRewarded {
       await Future.delayed(const Duration(milliseconds: 100));
     }
     dispose();
-    print('rewarded dispose');
     return item!;
   }
 }
