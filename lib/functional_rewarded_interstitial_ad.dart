@@ -62,7 +62,8 @@ class FunctionalRewardedInterstitialAd {
 
   Future<RewardItem> show({
     bool? immersiveMode,
-    FullScreenContentCallback<RewardedInterstitialAd>? fullScreenContentCallback,
+    FullScreenContentCallback<RewardedInterstitialAd>?
+        fullScreenContentCallback,
     OnUserEarnedRewardCallback? onUserEarnedReward,
   }) async {
     ad.fullScreenContentCallback = FullScreenContentCallback(
@@ -91,15 +92,20 @@ class FunctionalRewardedInterstitialAd {
       ad.setImmersiveMode(immersiveMode);
     }
 
-    RewardItem? item;
-    await ad.show(onUserEarnedReward: (ad, reward) {
-      item = reward;
-    });
+    try {
+      RewardItem? item;
+      await ad.show(onUserEarnedReward: (ad, reward) {
+        item = reward;
+      });
 
-    while (item == null) {
-      await Future.delayed(const Duration(milliseconds: 100));
+      while (item == null) {
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+      return item!;
+    } catch (e) {
+      rethrow;
+    } finally {
+      dispose();
     }
-    dispose();
-    return item!;
   }
 }
