@@ -58,8 +58,8 @@ class _MyAppState extends State<MyApp> {
                 child: const Text('RewardedAd')),
             ElevatedButton(
                 onPressed: () async {
-                  final item = await FunctionalRewardedAd.get(
-                      adUnitId: TestAdId.rewarded);
+                  final item = await FunctionalRewardedInterstitialAd.get(
+                      adUnitId: TestAdId.rewardedInterstitial);
 
                   print('item is ${item.amount}');
                   print('item is ${item.type}');
