@@ -9,30 +9,30 @@ class FunctionalRewardedAd {
 
   FunctionalRewardedAd();
 
-  RewardedAd? _rewardedAd;
+  RewardedAd? _ad;
 
-  RewardedAd get rewardedAd => _rewardedAd!;
+  RewardedAd get ad => _ad!;
 
   LoadAdError? loadAdError;
 
-  get isReady => _rewardedAd != null;
+  get isReady => _ad != null;
 
   Future<void> load({
     required adUnitId,
     AdRequest? request,
-    RewardedAdLoadCallback? rewardedAdLoadCallback,
+    RewardedAdLoadCallback? adLoadCallback,
   }) async {
-    _rewardedAd = null;
+    _ad = null;
     loadAdError = null;
 
     await RewardedAd.load(
       adUnitId: adUnitId,
       request: request ?? const AdRequest(),
       rewardedAdLoadCallback:
-          createRewardedAdLoadCallback(rewardedAdLoadCallback),
+          createRewardedAdLoadCallback(adLoadCallback),
     );
 
-    while (_rewardedAd == null) {
+    while (_ad == null) {
       if (loadAdError != null) {
         throw loadAdError!;
       }
@@ -41,8 +41,8 @@ class FunctionalRewardedAd {
   }
 
   void dispose() {
-    _rewardedAd?.dispose();
-    _rewardedAd = null;
+    _ad?.dispose();
+    _ad = null;
     loadAdError = null;
   }
 
@@ -50,7 +50,7 @@ class FunctionalRewardedAd {
       RewardedAdLoadCallback? userCallback) {
     return RewardedAdLoadCallback(
       onAdLoaded: (ad) {
-        _rewardedAd = ad;
+        _ad = ad;
         userCallback?.onAdLoaded.call(ad);
       },
       onAdFailedToLoad: (LoadAdError error) {
@@ -65,7 +65,7 @@ class FunctionalRewardedAd {
     FullScreenContentCallback<RewardedAd>? fullScreenContentCallback,
     OnUserEarnedRewardCallback? onUserEarnedReward,
   }) async {
-    rewardedAd.fullScreenContentCallback = FullScreenContentCallback(
+    ad.fullScreenContentCallback = FullScreenContentCallback(
       onAdShowedFullScreenContent: (ad) {
         fullScreenContentCallback?.onAdShowedFullScreenContent?.call(ad);
       },
@@ -88,11 +88,11 @@ class FunctionalRewardedAd {
     );
 
     if (immersiveMode != null) {
-      rewardedAd.setImmersiveMode(immersiveMode);
+      ad.setImmersiveMode(immersiveMode);
     }
 
     RewardItem? item;
-    await rewardedAd.show(onUserEarnedReward: (ad, reward) {
+    await ad.show(onUserEarnedReward: (ad, reward) {
       item = reward;
     });
 
