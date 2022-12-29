@@ -89,7 +89,12 @@ class FunctionalInterstitialAd {
       ad.setImmersiveMode(immersiveMode);
     }
 
-    await ad.show();
-    dispose();
+    try {
+      await ad.show();
+    } catch (e) {
+      rethrow;
+    } finally {
+      dispose();
+    }
   }
 }

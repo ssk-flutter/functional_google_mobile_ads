@@ -1,3 +1,6 @@
+## 0.1.4
+* dispose finally
+
 ## 0.1.3
 * FunctionalInterstitialAd
 * FunctionalRewardedAd

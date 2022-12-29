@@ -28,8 +28,7 @@ class FunctionalRewardedAd {
     await RewardedAd.load(
       adUnitId: adUnitId,
       request: request ?? const AdRequest(),
-      rewardedAdLoadCallback:
-          createRewardedAdLoadCallback(adLoadCallback),
+      rewardedAdLoadCallback: createRewardedAdLoadCallback(adLoadCallback),
     );
 
     while (_ad == null) {
@@ -91,15 +90,20 @@ class FunctionalRewardedAd {
       ad.setImmersiveMode(immersiveMode);
     }
 
-    RewardItem? item;
-    await ad.show(onUserEarnedReward: (ad, reward) {
-      item = reward;
-    });
+    try {
+      RewardItem? item;
+      await ad.show(onUserEarnedReward: (ad, reward) {
+        item = reward;
+      });
 
-    while (item == null) {
-      await Future.delayed(const Duration(milliseconds: 100));
+      while (item == null) {
+        await Future.delayed(const Duration(milliseconds: 100));
+      }
+      return item!;
+    } catch (e) {
+      rethrow;
+    } finally {
+      dispose();
     }
-    dispose();
-    return item!;
   }
 }
