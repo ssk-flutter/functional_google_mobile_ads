@@ -39,51 +39,32 @@ class _MyAppState extends State<MyApp> {
         ),
         body: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const Text('Rewarded (sequential)'),
-                if (!_rewarded.isReady)
-                  ElevatedButton(
-                      onPressed: () async {
-                        await _rewarded.load(adUnitId: TestAdId.rewarded);
-                        setState(() {});
-                      },
-                      child: const Text('load')),
-                if (_rewarded.isReady)
-                  ElevatedButton(
-                      onPressed: () async {
-                        final item = await _rewarded.show();
-                        setState(() {});
+            ElevatedButton(
+                onPressed: () async {
+                  await FunctionalInterstitialAd.get(
+                      adUnitId: TestAdId.interstitial);
 
-                        print('item is ${item.amount}');
-                        print('item is ${item.type}');
-                      },
-                      child: const Text('show')),
-                if (_rewarded.isReady)
-                  ElevatedButton(
-                      onPressed: () async {
-                        _rewarded.dispose();
-                        setState(() {});
-                      },
-                      child: const Text('dispose')),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                const Text('Rewarded (instant)'),
-                ElevatedButton(
-                    onPressed: () async {
-                      final item = await FunctionalAdmobRewarded.get(
-                          adUnitId: TestAdId.rewarded);
+                  print('interstitial ok');
+                },
+                child: const Text('InterstitialAd')),
+            ElevatedButton(
+                onPressed: () async {
+                  final item = await FunctionalAdmobRewarded.get(
+                      adUnitId: TestAdId.rewarded);
 
-                      print('item is ${item.amount}');
-                      print('item is ${item.type}');
-                    },
-                    child: const Text('load & show')),
-              ],
-            ),
+                  print('item is ${item.amount}');
+                  print('item is ${item.type}');
+                },
+                child: const Text('RewardedAd')),
+            ElevatedButton(
+                onPressed: () async {
+                  final item = await FunctionalAdmobRewarded.get(
+                      adUnitId: TestAdId.rewarded);
+
+                  print('item is ${item.amount}');
+                  print('item is ${item.type}');
+                },
+                child: const Text('RewardedInterstitialAd')),
             const Spacer(),
             FunctionalAdmobBanner(
               bannerAdUnitId: TestAdId.banner,
