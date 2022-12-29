@@ -1,17 +1,17 @@
 import 'functional_google_mobile_ads.dart';
 
-class FunctionalRewardedAd {
+class FunctionalRewardedInterstitialAd {
   static Future<RewardItem> loadAndShow({required String adUnitId}) async {
-    final rewarded = FunctionalRewardedAd();
+    final rewarded = FunctionalRewardedInterstitialAd();
     await rewarded.load(adUnitId: adUnitId);
     return await rewarded.show();
   }
 
-  FunctionalRewardedAd();
+  FunctionalRewardedInterstitialAd();
 
-  RewardedAd? _ad;
+  RewardedInterstitialAd? _ad;
 
-  RewardedAd get ad => _ad!;
+  RewardedInterstitialAd get ad => _ad!;
 
   LoadAdError? loadAdError;
 
@@ -20,15 +20,15 @@ class FunctionalRewardedAd {
   Future<void> load({
     required adUnitId,
     AdRequest? request,
-    RewardedAdLoadCallback? adLoadCallback,
+    RewardedInterstitialAdLoadCallback? adLoadCallback,
   }) async {
     _ad = null;
     loadAdError = null;
 
-    await RewardedAd.load(
+    await RewardedInterstitialAd.load(
       adUnitId: adUnitId,
       request: request ?? const AdRequest(),
-      rewardedAdLoadCallback:
+      rewardedInterstitialAdLoadCallback:
           createRewardedAdLoadCallback(adLoadCallback),
     );
 
@@ -46,9 +46,9 @@ class FunctionalRewardedAd {
     loadAdError = null;
   }
 
-  RewardedAdLoadCallback createRewardedAdLoadCallback(
-      RewardedAdLoadCallback? userCallback) {
-    return RewardedAdLoadCallback(
+  RewardedInterstitialAdLoadCallback createRewardedAdLoadCallback(
+      RewardedInterstitialAdLoadCallback? userCallback) {
+    return RewardedInterstitialAdLoadCallback(
       onAdLoaded: (ad) {
         _ad = ad;
         userCallback?.onAdLoaded.call(ad);
@@ -62,7 +62,7 @@ class FunctionalRewardedAd {
 
   Future<RewardItem> show({
     bool? immersiveMode,
-    FullScreenContentCallback<RewardedAd>? fullScreenContentCallback,
+    FullScreenContentCallback<RewardedInterstitialAd>? fullScreenContentCallback,
     OnUserEarnedRewardCallback? onUserEarnedReward,
   }) async {
     ad.fullScreenContentCallback = FullScreenContentCallback(
