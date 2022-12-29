@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
-class FunctionalAdmobBanner extends StatefulWidget {
-  const FunctionalAdmobBanner({
+class FunctionalBannerAd extends StatefulWidget {
+  const FunctionalBannerAd({
     Key? key,
     required this.bannerAdUnitId,
     this.adSize = AdSize.banner,
@@ -14,10 +14,10 @@ class FunctionalAdmobBanner extends StatefulWidget {
   final BannerAdListener? bannerListener;
 
   @override
-  State<FunctionalAdmobBanner> createState() => _FunctionalAdmobBannerState();
+  State<FunctionalBannerAd> createState() => _FunctionalBannerAdState();
 }
 
-class _FunctionalAdmobBannerState extends State<FunctionalAdmobBanner> {
+class _FunctionalBannerAdState extends State<FunctionalBannerAd> {
   late BannerAdListener _bannerListener;
   late AdRequest _adRequest;
   late BannerAd _bannerAd;
