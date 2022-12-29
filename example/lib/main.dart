@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('Functional Google Mobile Ads example'),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
