@@ -1,3 +1,6 @@
+## 0.1.5
+- unspecify `google_mobile_ads` and `plugin_platform_interface` version
+
 ## 0.1.4
 * dispose finally
 
