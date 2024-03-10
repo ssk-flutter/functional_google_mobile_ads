@@ -1,10 +1,10 @@
 name: functional_google_mobile_ads
 description: Functional version of Google Mobile Ads
-version: 0.1.4
+version: 0.1.5
 repository: https://github.com/ssk-flutter/functional_google_mobile_ads
 
 environment:
-  sdk: '>=2.18.1 <3.0.0'
+  sdk: '>=2.18.1 <4.0.0'
   flutter: ">=2.5.0"
 
 dependencies:
