@@ -1,10 +1,24 @@
 import 'functional_google_mobile_ads.dart';
 
 class FunctionalRewardedAd {
-  static Future<RewardItem> loadAndShow({required String adUnitId}) async {
+  @Deprecated('Use createAndShow instead')
+  static Future<RewardItem> loadAndShow({
+    required String adUnitId,
+  }) => createAndShow(adUnitId: adUnitId);
+
+  static Future<RewardItem> createAndShow({
+    required String adUnitId,
+  }) async {
+    FunctionalRewardedAd rewarded = await createAndLoad(adUnitId: adUnitId);
+    return await rewarded.show();
+  }
+
+  static Future<FunctionalRewardedAd> createAndLoad({
+    required String adUnitId,
+  }) async {
     final rewarded = FunctionalRewardedAd();
     await rewarded.load(adUnitId: adUnitId);
-    return await rewarded.show();
+    return rewarded;
   }
 
   FunctionalRewardedAd();
