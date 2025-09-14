@@ -3,11 +3,11 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class FunctionalBannerAd extends StatefulWidget {
   const FunctionalBannerAd({
-    Key? key,
+    super.key,
     required this.bannerAdUnitId,
     this.adSize = AdSize.banner,
     this.bannerListener,
-  }) : super(key: key);
+  });
 
   final String bannerAdUnitId;
   final AdSize adSize;

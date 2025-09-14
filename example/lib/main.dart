@@ -45,7 +45,7 @@ class _MyAppState extends State<MyApp> {
                   await FunctionalInterstitialAd.loadAndShow(
                       adUnitId: TestAdId.interstitial);
 
-                  print('interstitial ok');
+                  debugPrint('interstitial ok');
                 },
                 child: const Text('InterstitialAd')),
             ElevatedButton(
@@ -53,8 +53,8 @@ class _MyAppState extends State<MyApp> {
                   final item = await FunctionalRewardedAd.loadAndShow(
                       adUnitId: TestAdId.rewarded);
 
-                  print('item is ${item.amount}');
-                  print('item is ${item.type}');
+                  debugPrint('item is ${item.amount}');
+                  debugPrint('item is ${item.type}');
                 },
                 child: const Text('RewardedAd')),
             ElevatedButton(
@@ -62,8 +62,8 @@ class _MyAppState extends State<MyApp> {
                   final item = await FunctionalRewardedInterstitialAd.loadAndShow(
                       adUnitId: TestAdId.rewardedInterstitial);
 
-                  print('item is ${item.amount}');
-                  print('item is ${item.type}');
+                  debugPrint('item is ${item.amount}');
+                  debugPrint('item is ${item.type}');
                 },
                 child: const Text('RewardedInterstitialAd')),
             const SizedBox(height: 16),
