@@ -66,6 +66,14 @@ class _MyAppState extends State<MyApp> {
                   print('item is ${item.type}');
                 },
                 child: const Text('RewardedInterstitialAd')),
+            const SizedBox(height: 16),
+            const Text('Native Banner Ad:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const SizedBox(height: 8),
+            FunctionalNativeBannerAd(
+              adUnitId: TestAdId.nativeAdvanced,
+              templateType: TemplateType.medium,
+              height: 200,
+            ),
             const Spacer(),
             FunctionalBannerAd(
               bannerAdUnitId: TestAdId.banner,
