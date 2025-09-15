@@ -59,15 +59,17 @@ class _MyAppState extends State<MyApp> {
                 child: const Text('RewardedAd')),
             ElevatedButton(
                 onPressed: () async {
-                  final item = await FunctionalRewardedInterstitialAd.loadAndShow(
-                      adUnitId: TestAdId.rewardedInterstitial);
+                  final item =
+                      await FunctionalRewardedInterstitialAd.loadAndShow(
+                          adUnitId: TestAdId.rewardedInterstitial);
 
                   debugPrint('item is ${item.amount}');
                   debugPrint('item is ${item.type}');
                 },
                 child: const Text('RewardedInterstitialAd')),
             const SizedBox(height: 16),
-            const Text('Native Banner Ad:', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text('Native Banner Ad:',
+                style: TextStyle(fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),
             FunctionalNativeBannerAd(
               adUnitId: TestAdId.nativeAdvanced,

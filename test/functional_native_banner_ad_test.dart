@@ -7,7 +7,8 @@ void main() {
   group('FunctionalNativeBannerAd', () {
     const testAdUnitId = 'ca-app-pub-3940256099942544/2247696110';
 
-    testWidgets('should create widget with required parameters', (WidgetTester tester) async {
+    testWidgets('should create widget with required parameters',
+        (WidgetTester tester) async {
       const widget = FunctionalNativeBannerAd(
         adUnitId: testAdUnitId,
       );
@@ -22,7 +23,8 @@ void main() {
       expect(widget.nativeTemplateStyle, isNull);
     });
 
-    testWidgets('should create widget with custom parameters', (WidgetTester tester) async {
+    testWidgets('should create widget with custom parameters',
+        (WidgetTester tester) async {
       final customListener = NativeAdListener();
       final customRequest = AdRequest();
       final customStyle = NativeTemplateStyle(templateType: TemplateType.small);
@@ -49,7 +51,8 @@ void main() {
       expect(widget.nativeAdOptions, equals(customOptions));
     });
 
-    testWidgets('should display loading state initially', (WidgetTester tester) async {
+    testWidgets('should display loading state initially',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -64,7 +67,8 @@ void main() {
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
-    testWidgets('should have correct default size', (WidgetTester tester) async {
+    testWidgets('should have correct default size',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -81,7 +85,8 @@ void main() {
       expect(adSizedBox.height, equals(250));
     });
 
-    testWidgets('should use custom width and height when provided', (WidgetTester tester) async {
+    testWidgets('should use custom width and height when provided',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -100,7 +105,8 @@ void main() {
       expect(adSizedBox.height, equals(300));
     });
 
-    testWidgets('should adjust size for small template type', (WidgetTester tester) async {
+    testWidgets('should adjust size for small template type',
+        (WidgetTester tester) async {
       await tester.pumpWidget(
         const MaterialApp(
           home: Scaffold(
@@ -119,7 +125,8 @@ void main() {
     });
 
     group('State Management', () {
-      testWidgets('should initialize with correct initial state', (WidgetTester tester) async {
+      testWidgets('should initialize with correct initial state',
+          (WidgetTester tester) async {
         await tester.pumpWidget(
           const MaterialApp(
             home: Scaffold(

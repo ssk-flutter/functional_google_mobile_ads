@@ -24,7 +24,8 @@ class FunctionalNativeBannerAd extends StatefulWidget {
   final NativeTemplateStyle? nativeTemplateStyle;
 
   @override
-  State<FunctionalNativeBannerAd> createState() => _FunctionalNativeBannerAdState();
+  State<FunctionalNativeBannerAd> createState() =>
+      _FunctionalNativeBannerAdState();
 }
 
 class _FunctionalNativeBannerAdState extends State<FunctionalNativeBannerAd> {
@@ -52,9 +53,10 @@ class _FunctionalNativeBannerAdState extends State<FunctionalNativeBannerAd> {
       adUnitId: widget.adUnitId,
       listener: _createNativeAdListener(),
       request: widget.adRequest ?? const AdRequest(),
-      nativeTemplateStyle: widget.nativeTemplateStyle ?? NativeTemplateStyle(
-        templateType: widget.templateType,
-      ),
+      nativeTemplateStyle: widget.nativeTemplateStyle ??
+          NativeTemplateStyle(
+            templateType: widget.templateType,
+          ),
       nativeAdOptions: widget.nativeAdOptions,
     )..load();
   }
@@ -88,18 +90,17 @@ class _FunctionalNativeBannerAdState extends State<FunctionalNativeBannerAd> {
         widget.nativeAdListener?.onAdWillDismissScreen?.call(ad);
       },
       onPaidEvent: (ad, valueMicros, precision, currencyCode) {
-        widget.nativeAdListener?.onPaidEvent?.call(ad, valueMicros, precision, currencyCode);
+        widget.nativeAdListener?.onPaidEvent
+            ?.call(ad, valueMicros, precision, currencyCode);
       },
     );
   }
-
-
 
   Size _calculateAdSize(BuildContext context) {
     // 기본 크기 설정
     double defaultWidth = 320;
     double defaultHeight = 250;
-    
+
     // 템플릿 타입에 따른 크기 조정
     switch (widget.templateType) {
       case TemplateType.small:
@@ -109,7 +110,7 @@ class _FunctionalNativeBannerAdState extends State<FunctionalNativeBannerAd> {
         defaultHeight = 250;
         break;
     }
-    
+
     // 화면 크기에 맞춰 조정
     final screenWidth = MediaQuery.of(context).size.width;
     if (defaultWidth > screenWidth) {
@@ -117,7 +118,7 @@ class _FunctionalNativeBannerAdState extends State<FunctionalNativeBannerAd> {
       defaultWidth = screenWidth - 32; // 패딩 고려
       defaultHeight = defaultWidth * ratio;
     }
-    
+
     return Size(defaultWidth, defaultHeight);
   }
 
@@ -162,7 +163,7 @@ class _FunctionalNativeBannerAdState extends State<FunctionalNativeBannerAd> {
   @override
   Widget build(BuildContext context) {
     final adSize = _calculateAdSize(context);
-    
+
     return SizedBox(
       width: widget.width ?? adSize.width,
       height: widget.height ?? adSize.height,

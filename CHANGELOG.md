@@ -1,3 +1,12 @@
+## 0.2.1
+- Improved pub.dev score to achieve maximum points (130/130)
+- Updated Google Mobile Ads dependency to ^6.0.0 for better compatibility
+- Fixed dependency constraint lower bounds compatibility issues
+- Enhanced pubspec.yaml metadata with comprehensive package information
+- Added topics, homepage, issue tracker, and documentation links
+- Fixed all Dart formatting issues to pass static analysis
+- Improved package description for better discoverability
+
 ## 0.2.0
 - Add FunctionalNativeBannerAd widget for native banner advertisements
 - Support for TemplateType.small and TemplateType.medium native ad templates

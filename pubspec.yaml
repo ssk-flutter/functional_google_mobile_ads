@@ -1,7 +1,17 @@
 name: functional_google_mobile_ads
-description: Functional version of Google Mobile Ads
-version: 0.2.0
+description: A functional Flutter plugin for Google Mobile Ads with simplified one-line usage for interstitial, rewarded, banner, and native ads.
+version: 0.2.1
 repository: https://github.com/ssk-flutter/functional_google_mobile_ads
+homepage: https://github.com/ssk-flutter/functional_google_mobile_ads
+issue_tracker: https://github.com/ssk-flutter/functional_google_mobile_ads/issues
+documentation: https://github.com/ssk-flutter/functional_google_mobile_ads#readme
+
+topics:
+  - ads
+  - google
+  - admob
+  - advertising
+  - monetization
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -10,8 +20,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  plugin_platform_interface:
-  google_mobile_ads:
+  plugin_platform_interface: ^2.1.8
+  google_mobile_ads: ^6.0.0
 
 dev_dependencies:
   flutter_test:
