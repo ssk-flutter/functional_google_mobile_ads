@@ -63,7 +63,6 @@ void main() {
         ),
       );
 
-      expect(find.text('Loading Native Ad...'), findsOneWidget);
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });
 
@@ -138,7 +137,7 @@ void main() {
         );
 
         // Should show loading state initially
-        expect(find.text('Loading Native Ad...'), findsOneWidget);
+        expect(find.byType(CircularProgressIndicator), findsOneWidget);
       });
     });
 

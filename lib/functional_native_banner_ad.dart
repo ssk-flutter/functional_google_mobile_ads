@@ -144,15 +144,6 @@ class _FunctionalNativeBannerAdState extends State<FunctionalNativeBannerAd> {
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
                 ),
               ),
-              SizedBox(height: 8),
-              Text(
-                'Loading Native Ad...',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
             ],
           ),
         ),
