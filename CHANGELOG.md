@@ -1,3 +1,7 @@
+## 0.2.2
+- Fixed BoxConstraints negative minimum width issue in FunctionalNativeBannerAd
+- Fixed banner ad size requirements error by using standard AdSize
+
 ## 0.2.1
 - Improved pub.dev score to achieve maximum points (130/130)
 - Updated Google Mobile Ads dependency to ^6.0.0 for better compatibility

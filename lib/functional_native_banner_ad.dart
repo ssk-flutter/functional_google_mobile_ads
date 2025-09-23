@@ -57,7 +57,12 @@ class _FunctionalNativeBannerAdState extends State<FunctionalNativeBannerAd> {
           NativeTemplateStyle(
             templateType: widget.templateType,
           ),
-      nativeAdOptions: widget.nativeAdOptions,
+      nativeAdOptions: widget.nativeAdOptions ??
+          NativeAdOptions(
+            shouldRequestMultipleImages: false,
+            shouldReturnUrlsForImageAssets: false,
+            mediaAspectRatio: MediaAspectRatio.square,
+          ),
     )..load();
   }
 
@@ -115,7 +120,7 @@ class _FunctionalNativeBannerAdState extends State<FunctionalNativeBannerAd> {
     final screenWidth = MediaQuery.of(context).size.width;
     if (defaultWidth > screenWidth) {
       final ratio = defaultHeight / defaultWidth;
-      defaultWidth = screenWidth - 32; // 패딩 고려
+      defaultWidth = (screenWidth - 32).clamp(50.0, double.infinity); // 패딩 고려, 최소 50px 보장
       defaultHeight = defaultWidth * ratio;
     }
 
