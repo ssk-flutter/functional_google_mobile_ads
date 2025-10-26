@@ -81,7 +81,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.2.1"
+    version: "6.0.0"
   google_mobile_ads:
     dependency: transitive
     description:
@@ -162,14 +162,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.8"
-  selector:
-    dependency: "direct main"
-    description:
-      name: selector
-      sha256: bf0a9af44682ae178b9d78ac78f88de27020e3820e9ccb8234aa9625b0dd3ea8
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   sky_engine:
     dependency: transitive
     description: flutter

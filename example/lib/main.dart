@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
-import 'package:selector/selector.dart';
 import 'package:functional_google_mobile_ads/functional_google_mobile_ads.dart';
 
 void main() {
@@ -122,3 +123,5 @@ class TestAdId {
     'ca-app-pub-3940256099942544/2521693316',
   );
 }
+
+String androidOrElse(String android, String orElse) => Platform.isAndroid ? android : orElse;
