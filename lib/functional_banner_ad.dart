@@ -3,11 +3,11 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class FunctionalBannerAd extends StatefulWidget {
   const FunctionalBannerAd({
-    Key? key,
+    super.key,
     required this.bannerAdUnitId,
     this.adSize = AdSize.banner,
     this.bannerListener,
-  }) : super(key: key);
+  });
 
   final String bannerAdUnitId;
   final AdSize adSize;
@@ -75,12 +75,7 @@ class _FunctionalBannerAdState extends State<FunctionalBannerAd> {
   }
 
   AdSize _calculateAdSize(BuildContext context) {
-    final width = MediaQuery.of(context).size.width;
-    var heightRatio = widget.adSize.height / widget.adSize.width;
-    var height = heightRatio * width;
-
-    final adSize = AdSize(width: width.toInt(), height: height.toInt());
-    return adSize;
+    return widget.adSize;
   }
 
   @override

@@ -46,6 +46,20 @@ Column(
 )
 ```
 
+#### FunctionalNativeBannerAd
+
+```
+Column(
+    children: [
+        FunctionalNativeBannerAd(
+            adUnitId: 'adUnitId',
+            templateType: TemplateType.medium,
+            height: 200,
+        ),
+    ] 
+)
+```
+
 ## Advanced Usage
 ```dart
     final ad = FunctionalRewardedAd();
@@ -58,4 +72,25 @@ Column(
     } finally {
       ad.dispose();
     }
+```
+
+## Native Banner Ad Customization
+
+```dart
+FunctionalNativeBannerAd(
+  adUnitId: 'your-native-ad-unit-id',
+  templateType: TemplateType.small, // or TemplateType.medium
+  width: 320,
+  height: 150,
+  nativeAdListener: NativeAdListener(
+    onAdLoaded: (ad) => print('Native ad loaded'),
+    onAdFailedToLoad: (ad, error) => print('Native ad failed to load: $error'),
+    onAdClicked: (ad) => print('Native ad clicked'),
+  ),
+  nativeTemplateStyle: NativeTemplateStyle(
+    templateType: TemplateType.small,
+    mainBackgroundColor: Colors.white,
+    cornerRadius: 8.0,
+  ),
+)
 ```
