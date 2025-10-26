@@ -15,10 +15,10 @@ class FunctionalRewardedInterstitialAd {
 
   LoadAdError? loadAdError;
 
-  get isReady => _ad != null;
+  bool get isReady => _ad != null;
 
   Future<void> load({
-    required adUnitId,
+    required String adUnitId,
     AdRequest? request,
     RewardedInterstitialAdLoadCallback? adLoadCallback,
   }) async {
