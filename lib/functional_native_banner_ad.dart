@@ -33,22 +33,35 @@ class _FunctionalNativeBannerAdState extends State<FunctionalNativeBannerAd> {
   bool _isAdLoaded = false;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _initializeNativeAd();
+  void initState() {
+    super.initState();
+    _loadAd();
+  }
+
+  @override
+  void didUpdateWidget(FunctionalNativeBannerAd oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Reload ad if key properties change
+    if (oldWidget.adUnitId != widget.adUnitId ||
+        oldWidget.templateType != widget.templateType) {
+      _disposeAd();
+      _loadAd();
+    }
   }
 
   @override
   void dispose() {
-    _nativeAd?.dispose();
+    _disposeAd();
     super.dispose();
   }
 
-  void _initializeNativeAd() {
+  void _disposeAd() {
     _nativeAd?.dispose();
     _nativeAd = null;
     _isAdLoaded = false;
+  }
 
+  void _loadAd() {
     _nativeAd = NativeAd(
       adUnitId: widget.adUnitId,
       listener: _createNativeAdListener(),
@@ -101,69 +114,66 @@ class _FunctionalNativeBannerAdState extends State<FunctionalNativeBannerAd> {
     );
   }
 
-  Size _calculateAdSize(BuildContext context) {
-    // 기본 크기 설정
-    double defaultWidth = 320;
-    double defaultHeight = 250;
-
-    // 템플릿 타입에 따른 크기 조정
-    switch (widget.templateType) {
-      case TemplateType.small:
-        defaultHeight = 150;
-        break;
-      case TemplateType.medium:
-        defaultHeight = 250;
-        break;
-    }
-
-    // 화면 크기에 맞춰 조정
-    final screenWidth = MediaQuery.of(context).size.width;
-    if (defaultWidth > screenWidth) {
-      final ratio = defaultHeight / defaultWidth;
-      defaultWidth = (screenWidth - 32).clamp(50.0, double.infinity); // 패딩 고려, 최소 50px 보장
-      defaultHeight = defaultWidth * ratio;
-    }
-
-    return Size(defaultWidth, defaultHeight);
-  }
-
-  Widget _buildAdWidget() {
-    if (_isAdLoaded && _nativeAd != null) {
-      return AdWidget(ad: _nativeAd!);
-    } else {
-      return Container(
-        decoration: BoxDecoration(
-          color: Colors.grey[100],
-          borderRadius: BorderRadius.circular(8),
-          border: Border.all(color: Colors.grey[300]!, width: 1),
-        ),
-        child: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(
-                  strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    final adSize = _calculateAdSize(context);
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Default dimensions based on template type
+        double defaultWidth = 320;
+        double defaultHeight = widget.templateType == TemplateType.small ? 150 : 250;
 
-    return SizedBox(
-      width: widget.width ?? adSize.width,
-      height: widget.height ?? adSize.height,
-      child: _buildAdWidget(),
+        // Calculate actual dimensions
+        double actualWidth;
+        double actualHeight;
+
+        if (widget.width != null) {
+          // User specified width - use it
+          actualWidth = widget.width!;
+        } else if (constraints.hasBoundedWidth) {
+          // Use parent's available width
+          actualWidth = constraints.maxWidth.clamp(1.0, double.infinity);
+        } else {
+          // No parent constraint - use default
+          actualWidth = defaultWidth;
+        }
+
+        if (widget.height != null) {
+          // User specified height - use it
+          actualHeight = widget.height!;
+        } else if (constraints.hasBoundedHeight) {
+          // Use parent's available height
+          actualHeight = constraints.maxHeight.clamp(1.0, double.infinity);
+        } else {
+          // No parent constraint - use default
+          actualHeight = defaultHeight;
+        }
+
+        final loadingWidget = Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.grey[300]!, width: 1),
+          ),
+          child: const Center(
+            child: SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+              ),
+            ),
+          ),
+        );
+
+        return SizedBox(
+          width: actualWidth,
+          height: actualHeight,
+          child: _isAdLoaded && _nativeAd != null
+              ? AdWidget(ad: _nativeAd!)
+              : loadingWidget,
+        );
+      },
     );
   }
 }
