@@ -18,39 +18,54 @@ class FunctionalBannerAd extends StatefulWidget {
 }
 
 class _FunctionalBannerAdState extends State<FunctionalBannerAd> {
-  late BannerAdListener _bannerListener;
-  late AdRequest _adRequest;
-  late BannerAd _bannerAd;
+  BannerAd? _bannerAd;
+  bool _isAdLoaded = false;
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _initializeAd();
+  void initState() {
+    super.initState();
+    _loadAd();
+  }
+
+  @override
+  void didUpdateWidget(FunctionalBannerAd oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Reload ad if adSize or adUnitId changes
+    if (oldWidget.adSize != widget.adSize ||
+        oldWidget.bannerAdUnitId != widget.bannerAdUnitId) {
+      _disposeAd();
+      _loadAd();
+    }
   }
 
   @override
   void dispose() {
-    _bannerAd.dispose();
+    _disposeAd();
     super.dispose();
   }
 
-  void _initializeAd() {
-    _adRequest = const AdRequest();
-    _bannerListener = createBannerAdListener();
+  void _disposeAd() {
+    _bannerAd?.dispose();
+    _bannerAd = null;
+    _isAdLoaded = false;
+  }
 
+  void _loadAd() {
     _bannerAd = BannerAd(
-      size: _calculateAdSize(context),
+      size: widget.adSize,
       adUnitId: widget.bannerAdUnitId,
-      listener: _bannerListener,
-      request: _adRequest,
+      listener: createBannerAdListener(),
+      request: const AdRequest(),
     )..load();
   }
 
   BannerAdListener createBannerAdListener() {
     return BannerAdListener(
       onAdLoaded: (ad) {
+        if (mounted) {
+          setState(() => _isAdLoaded = true);
+        }
         widget.bannerListener?.onAdLoaded?.call(ad);
-        setState(() {});
       },
       onAdFailedToLoad: (ad, error) {
         widget.bannerListener?.onAdFailedToLoad?.call(ad, error);
@@ -74,17 +89,76 @@ class _FunctionalBannerAdState extends State<FunctionalBannerAd> {
     );
   }
 
-  AdSize _calculateAdSize(BuildContext context) {
-    return widget.adSize;
-  }
-
   @override
   Widget build(BuildContext context) {
-    final adSize = _calculateAdSize(context);
-    return SizedBox(
-      width: adSize.width.toDouble(),
-      height: adSize.height.toDouble(),
-      child: AdWidget(ad: _bannerAd),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Calculate actual size respecting parent constraints
+        final adWidth = widget.adSize.width.toDouble();
+        final adHeight = widget.adSize.height.toDouble();
+
+        // Handle fluid AdSize (width=-1 or height=-1)
+        final isFluidWidth = adWidth < 0;
+        final isFluidHeight = adHeight < 0;
+
+        // Calculate actual dimensions
+        double actualWidth;
+        double actualHeight;
+
+        if (isFluidWidth && constraints.hasBoundedWidth) {
+          // Fluid width - use parent's available width
+          actualWidth = constraints.maxWidth.clamp(1.0, double.infinity);
+        } else if (constraints.hasBoundedWidth && !isFluidWidth) {
+          // Fixed width - respect parent constraints but prefer ad size
+          actualWidth = constraints.maxWidth.clamp(1.0, double.infinity);
+        } else {
+          // No parent constraint - use ad size
+          actualWidth = adWidth.abs().clamp(1.0, double.infinity);
+        }
+
+        if (isFluidHeight && constraints.hasBoundedHeight) {
+          // Fluid height - use parent's available height
+          actualHeight = constraints.maxHeight.clamp(1.0, double.infinity);
+        } else if (constraints.hasBoundedHeight && !isFluidHeight) {
+          // Fixed height - respect parent constraints but prefer ad size
+          actualHeight = constraints.maxHeight.clamp(1.0, double.infinity);
+        } else {
+          // No parent constraint - use ad size
+          actualHeight = adHeight.abs().clamp(1.0, double.infinity);
+        }
+
+        final loadingWidget = Container(
+          decoration: BoxDecoration(
+            color: Colors.grey[100],
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.grey[300]!, width: 1),
+          ),
+          child: const Center(
+            child: SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.grey),
+              ),
+            ),
+          ),
+        );
+
+        if (_bannerAd == null) {
+          return SizedBox(
+            width: actualWidth,
+            height: actualHeight,
+            child: loadingWidget,
+          );
+        }
+
+        return SizedBox(
+          width: actualWidth,
+          height: actualHeight,
+          child: _isAdLoaded ? AdWidget(ad: _bannerAd!) : loadingWidget,
+        );
+      },
     );
   }
 }

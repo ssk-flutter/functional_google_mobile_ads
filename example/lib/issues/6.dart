@@ -115,13 +115,10 @@ class _Issue6TestPageState extends State<Issue6TestPage> {
                       Container(
                         color: Colors.blue[50],
                         padding: const EdgeInsets.all(16),
-                        height: 200,
+                        height: 250,
                         child: Column(
                           children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.blue, width: 2),
-                              ),
+                            Expanded(
                               child: FunctionalBannerAd(
                                 bannerAdUnitId: TestAdId.banner,
                                 adSize: _selectedAdSize,
@@ -129,9 +126,9 @@ class _Issue6TestPageState extends State<Issue6TestPage> {
                             ),
                             const SizedBox(height: 8),
                             const Text(
-                              'Expected: Ad should respect parent width\nActual: Ad uses fixed AdSize dimensions',
+                              'Ad respects parent constraints.\nFluid AdSize adapts to available space.',
                               textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 11, color: Colors.red),
+                              style: TextStyle(fontSize: 11, color: Colors.green),
                             ),
                           ],
                         ),
@@ -157,14 +154,9 @@ class _Issue6TestPageState extends State<Issue6TestPage> {
                             ),
                             const SizedBox(width: 8),
                             Expanded(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.green, width: 2),
-                                ),
-                                child: FunctionalBannerAd(
-                                  bannerAdUnitId: TestAdId.banner,
-                                  adSize: _selectedAdSize,
-                                ),
+                              child: FunctionalBannerAd(
+                                bannerAdUnitId: TestAdId.banner,
+                                adSize: _selectedAdSize,
                               ),
                             ),
                           ],
