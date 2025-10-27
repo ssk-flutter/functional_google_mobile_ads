@@ -1,3 +1,14 @@
+## 6.0.1
+- Fixed issue #6: Banner and native banner ads now respect parent constraints instead of only using MediaQuery
+- FunctionalBannerAd now uses LayoutBuilder to properly size ads based on parent container
+- FunctionalNativeBannerAd replaced MediaQuery with LayoutBuilder for accurate sizing
+- Fixed AdWidget reuse error by implementing proper lifecycle management with didUpdateWidget
+- Added support for fluid AdSize (negative width/height values)
+- Ads now work correctly in Expanded widgets and OrientationBuilder
+- Removed hardcoded padding calculations (screenWidth-32) in native banner ads
+- Improved ad reload logic: only recreates when adSize/templateType changes
+- Added comprehensive test pages for both banner and native banner ads
+
 ## 6.0.0
 - Updated to match google_mobile_ads 6.0.0 version
 
